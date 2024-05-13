@@ -29,7 +29,7 @@ public class ComparatorService {
         Map<String, Integer> wordCount1 = countWords(text1);
         Map<String, Integer> wordCount2 = countWords(text2);
 
-        float similarity = calculateCosineSimilarity(wordCount1, wordCount2);
+        float similarity = 1 - calculateCosineSimilarity(wordCount1, wordCount2);
         saveTextHistoric(text1, text2, String.valueOf(similarity));
 
         return similarity;
