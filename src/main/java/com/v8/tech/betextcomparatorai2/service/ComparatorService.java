@@ -17,11 +17,25 @@ public class ComparatorService {
     @Autowired
     private TextHistoricService service;
 
+    /**
+     * Saves a new TextHistoric object to the database.
+     *
+     * @param text1 The first text to be saved in the TextHistoric object.
+     * @param text2 The second text to be saved in the TextHistoric object.
+     * @param similarity The similarity score between the two texts.
+     */
     public void saveTextHistoric(String text1, String text2, String similarity) {
-        TextHistoric textHistoric = new TextHistoric(text1, text2, String.valueOf(similarity));
+        TextHistoric textHistoric = new TextHistoric(text1, text2, similarity);
         service.saveTextHistoric(textHistoric);
     }
 
+    /**
+     * Compares two texts and calculates their similarity using the cosine similarity method.
+     * The similarity score is then saved in the TextHistoric database.
+     *
+     * @param request The TextRequest object containing the two texts to be compared.
+     * @return The similarity score between the two texts.
+     */
     public float compareTexts(TextRequest request) {
         String text1 = request.text1();
         String text2 = request.text2();
@@ -35,6 +49,12 @@ public class ComparatorService {
         return similarity;
     }
 
+    /**
+     * Counts the occurrences of each word in the given text.
+     *
+     * @param text The input text to be processed.
+     * @return A map containing the count of each unique word in the text.
+     */
     private Map<String, Integer> countWords(String text) {
         Map<String, Integer> wordCount = new HashMap<>();
         String[] words = text.toLowerCase().split("\\s+");
@@ -49,6 +69,13 @@ public class ComparatorService {
         return wordCount;
     }
 
+    /**
+     * Calculates the cosine similarity between two texts based on the word frequency.
+     *
+     * @param wordCount1 A map containing the count of each unique word in the first text.
+     * @param wordCount2 A map containing the count of each unique word in the second text.
+     * @return The cosine similarity score between the two texts.
+     */
     private float calculateCosineSimilarity(Map<String, Integer> wordCount1, Map<String, Integer> wordCount2) {
         Set<String> uniqueWords = new HashSet<>(wordCount1.keySet());
         uniqueWords.addAll(wordCount2.keySet());
